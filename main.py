@@ -87,10 +87,10 @@ def main():
                 4, 6, 1,
                 3, 5, 8)  # depth 24
     while True:
-        puzzleMode = input("This is an 8-Puzzle solver. Type '1' for default puzzles, or '2' to input your own puzzle: ")
+        puzzleMode = input("This is an 8-Puzzle Solver. Type '1' for default puzzles, or '2' to input your own puzzle: ")
         if puzzleMode == '1':
             while True:
-                choice = input("Choose a Puzzle. Type '1' for a solved puzzle, '2' for a Depth 8 puzzle, or '3' for a Depth 24 puzzle: ")
+                choice = input("Choose a puzzle. Type '1' for a solved puzzle, '2' for a Depth 8 puzzle, or '3' for a Depth 24 puzzle: ")
                 if choice == '1':
                     start = DEFAULT1
                     break
@@ -100,9 +100,11 @@ def main():
                 if choice == '3':
                     start = DEFAULT3
                     break
+                print("Please enter a value 1-3.")
             break
         if puzzleMode == '2':
             break
+        print("Please enter a value 1-2.")
 
     node, num_nodes_expanded, max_queue_size = ucs(start)
 
@@ -118,6 +120,8 @@ def main():
         print(f"Nodes expanded: {num_nodes_expanded}")
         print(f"Max queue size: {max_queue_size}")
         print()
+    else:
+        print("No solution found.")
         
 
 if __name__ == "__main__":
