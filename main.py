@@ -43,6 +43,8 @@ def ucs(initial_state):
     heapq.heappush(q, (0, counter, root))
 
     minCost = {root.state: 0}
+    nodesExpanded = 0
+    max_queue_size = len(q)
 
     while q:
         priority, nodeCounter, node = heapq.heappop(q)
@@ -51,7 +53,9 @@ def ucs(initial_state):
             continue
 
         if success(node.state):
-            return node
+            return node, nodesExpanded, max_queue_size
+
+        nodesExpanded += 1
 
         for child in expand(node):
             g = child.cost
@@ -60,7 +64,16 @@ def ucs(initial_state):
                 counter += 1
                 heapq.heappush(q, (g, counter, child))
 
-    return None
+        max_queue_size = max(max_queue_size, len(q))
+
+    return None, nodesExpanded, max_queue_size
+
+def trace_solution(node):
+    path = []
+    while node:
+        path.append(node.state)
+        node = node.parent
+    return path[::-1]
 
 def main():
     
@@ -74,25 +87,37 @@ def main():
                 4, 6, 1,
                 3, 5, 8)  # depth 24
     while True:
-        
-        node = ucs(DEFAULT1)
-        if node:
-            print(f"Default 1: solved")
-        else:
-            print(f"Default 1: no solution found")
+        puzzleMode = input("This is an 8-Puzzle solver. Type '1' for default puzzles, or '2' to input your own puzzle: ")
+        if puzzleMode == '1':
+            while True:
+                choice = input("Choose a Puzzle. Type '1' for a solved puzzle, '2' for a Depth 8 puzzle, or '3' for a Depth 24 puzzle: ")
+                if choice == '1':
+                    start = DEFAULT1
+                    break
+                if choice == '2':
+                    start = DEFAULT2
+                    break
+                if choice == '3':
+                    start = DEFAULT3
+                    break
+            break
+        if puzzleMode == '2':
+            break
 
-        node = ucs(DEFAULT2)
-        if node:
-            print(f"Default 2: solved")
-        else:
-            print(f"Default 2: no solution found")
+    node, num_nodes_expanded, max_queue_size = ucs(start)
 
-        node = ucs(DEFAULT3)
-        if node:
-            print(f"Default 3: solved")
-        else:
-            print(f"Default 3: no solution found")
-        break
+    if node:
+        path = trace_solution(node)
+        depth = len(path) - 1
+        for step in path:
+            print(list(step[:3]))
+            print(list(step[3:6]))
+            print(list(step[6:]))
+            print()
+        print(f"Solution depth (moves): {depth}")
+        print(f"Nodes expanded: {num_nodes_expanded}")
+        print(f"Max queue size: {max_queue_size}")
+        print()
         
 
 if __name__ == "__main__":
