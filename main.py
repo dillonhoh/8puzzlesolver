@@ -125,21 +125,25 @@ def main():
                 4, 6, 1,
                 3, 5, 8)  # depth 24
     def inputPuzzle():
+        print("Each row should only contain 3 numbers. Only integers 0-8 can be inputed, each exactly once.")
         rows = []
         for r in range(1, 4):
             rowInput = input(f"Enter row {r} : ")
             nums = rowInput.replace(',', ' ').split()
             if len(nums) != 3:
+                print("Invalid input, each row must contain exactly 3 numbers.")
                 sys.exit(1)
             for n in nums:
-                if not n.isdigit() or not (0 <= int(n) <= 8):
+                if not n.isdigit() or not (0 <= int(n) <= 8): 
+                    print("Invalid input, please enter only integers 0-8.")
                     sys.exit(1)
-            rows.extend(int(n) for n in nums)
+            rows.extend(int(n) for n in nums) # append to our actual row
 
         if set(rows) != set(range(9)):
+            print("Invalid input, numbers must be unique 0-8.")
             sys.exit(1)
 
-        return tuple(rows)
+        return tuple(rows) # normalize back to tuple
     
     while True:
         puzzleMode = input("This is an 8-Puzzle Solver. Type '1' for default puzzles, or '2' to input your own puzzle: ")
@@ -158,13 +162,13 @@ def main():
                 print("Please enter a value 1-3.")
             break
         if puzzleMode == '2':
-            start = inputPuzzle()
+            start = inputPuzzle() 
             break
         print("Please enter a value 1-2.")
 
     while True:
         alg = input("Choose an algorithm: Type '1' for UCS, '2' for Misplaced Tile Heuristic, or '3' for Manhattan Distance Heuristic: ").strip()
-        if alg in ('1', '2', '3'):
+        if alg in ('1', '2', '3'): 
             break
         print("Please enter a value 1-3.")
 
@@ -176,10 +180,10 @@ def main():
         node, nodesExpanded, max_queue_size = ucs(start, heuristic_manhattan)
 
     if node:
-        path = trace_solution(node)
+        path = trace_solution(node) # remember path is already reversed within the fyunction
         depth = len(path) - 1
         for step in path:
-            print(list(step[:3]))
+            print(list(step[:3])) # list for bracket []
             print(list(step[3:6]))
             print(list(step[6:]))
             print()
