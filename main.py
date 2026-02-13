@@ -108,10 +108,10 @@ def heuristic_manhattan(state):
 
 def trace_solution(node):
     path = []
-    while node:
+    while node: # add last state(goal), go up to parent, add parent
         path.append(node.state)
-        node = node.parent
-    return path[::-1]
+        node = node.parent 
+    return path[::-1] # print in reverse ( starting from root)
 
 
 def main():
@@ -124,7 +124,23 @@ def main():
     DEFAULT3 = (0, 7, 2,
                 4, 6, 1,
                 3, 5, 8)  # depth 24
+    def inputPuzzle():
+        rows = []
+        for r in range(1, 4):
+            rowInput = input(f"Enter row {r} : ")
+            nums = rowInput.replace(',', ' ').split()
+            if len(nums) != 3:
+                sys.exit(1)
+            for n in nums:
+                if not n.isdigit() or not (0 <= int(n) <= 8):
+                    sys.exit(1)
+            rows.extend(int(n) for n in nums)
 
+        if set(rows) != set(range(9)):
+            sys.exit(1)
+
+        return tuple(rows)
+    
     while True:
         puzzleMode = input("This is an 8-Puzzle Solver. Type '1' for default puzzles, or '2' to input your own puzzle: ")
         if puzzleMode == '1':
@@ -142,6 +158,7 @@ def main():
                 print("Please enter a value 1-3.")
             break
         if puzzleMode == '2':
+            start = inputPuzzle()
             break
         print("Please enter a value 1-2.")
 
