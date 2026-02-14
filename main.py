@@ -115,17 +115,17 @@ def trace_solution(node):
 
 
 def main():
-    DEFAULT1 = (7, 1, 2,
-                4, 8, 5,
-                6, 3, 0)  # solved
-    DEFAULT2 = (0, 7, 2,
+    DEFAULT1 = (1, 2, 3,
+                4, 5, 6,
+                7, 8, 0)  # solved
+    DEFAULT2 = (1, 3, 6,
+                5, 0, 2,
+                4, 7, 8)  # depth 8
+    DEFAULT3 = (0, 7, 2,
                 4, 6, 1,
-                3, 5, 8)  # depth 8
-    DEFAULT3 = (1, 6, 7,
-                5, 0, 3,
-                4, 8, 2)  # depth 24
+                3, 5, 8)  # depth 24
     def inputPuzzle():
-        print("Each row should only contain 3 numbers. Only integers 0-8 can be inputed, each exactly once.")
+        print("Each row should only contain 3 numbers. Only integers 0-8 can be inputted, each exactly once.")
         rows = []
         for r in range(1, 4):
             rowInput = input(f"Enter row {r} : ")
