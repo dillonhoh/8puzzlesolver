@@ -78,7 +78,6 @@ def ucs(initial_state, heuristic=None):
                 if heuristic is None:
                     heapq.heappush(q, (g, counter, child))
                 else:
-                    h = heuristic(child.state)
                     heapq.heappush(q, (g + heuristic(child.state), counter, child))
 
         max_queue_size = max(max_queue_size, len(q))
