@@ -115,15 +115,15 @@ def trace_solution(node):
 
 
 def main():
-    DEFAULT1 = (1, 2, 3,
-                4, 5, 6,
-                7, 8, 0)  # solved
-    DEFAULT2 = (1, 3, 6,
-                5, 0, 2,
-                4, 7, 8)  # depth 8
-    DEFAULT3 = (0, 7, 2,
+    DEFAULT1 = (7, 1, 2,
+                4, 8, 5,
+                6, 3, 0)  # solved
+    DEFAULT2 = (0, 7, 2,
                 4, 6, 1,
-                3, 5, 8)  # depth 24
+                3, 5, 8)  # depth 8
+    DEFAULT3 = (1, 6, 7,
+                5, 0, 3,
+                4, 8, 2)  # depth 24
     def inputPuzzle():
         print("Each row should only contain 3 numbers. Only integers 0-8 can be inputed, each exactly once.")
         rows = []
@@ -168,25 +168,33 @@ def main():
 
     while True:
         alg = input("Choose an algorithm: Type '1' for UCS, '2' for Misplaced Tile Heuristic, or '3' for Manhattan Distance Heuristic: ").strip()
-        if alg in ('1', '2', '3'): 
+        if alg in ('1', '2', '3'):
             break
         print("Please enter a value 1-3.")
 
+    heuristicn = None
     if alg == '1':
         node, nodesExpanded, max_queue_size = ucs(start)
     elif alg == '2':
+        heuristicn = heuristic_misplaced
         node, nodesExpanded, max_queue_size = ucs(start, heuristic_misplaced)
     else:
+        heuristicn = heuristic_manhattan
         node, nodesExpanded, max_queue_size = ucs(start, heuristic_manhattan)
 
     if node:
-        path = trace_solution(node) # remember path is already reversed within the fyunction
+        
+        path = trace_solution(node)  # remember path is already reversed within the fyunction
         depth = len(path) - 1
-        for step in path:
-            print(list(step[:3])) # list for bracket []
+        for i, step in enumerate(path):
+            g = i
+            h = heuristicn(step) if heuristicn is not None else 0
+            print(f"The best state to expand with a g(n) = {g} and h(n) = {h} is...")
+            print(list(step[:3]))  # list for bracket []
             print(list(step[3:6]))
             print(list(step[6:]))
             print()
+        print("Goal State!")
         print(f"Solution depth (moves): {depth}")
         print(f"Nodes expanded: {nodesExpanded}")
         print(f"Max queue size: {max_queue_size}")
